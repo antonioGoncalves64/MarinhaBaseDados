@@ -1,0 +1,417 @@
+== prática: consistência de dados
+
+
+
+Os **requisitos de bases de dados** referem-se às condições que uma base de dados deve satisfazer para responder às necessidades específicas de um sistema ou aplicação. Estes requisitos dividem-se em duas categorias principais: **funcionais** e **não funcionais**. Os **requisitos funcionais** dizem respeito às funcionalidades que a base de dados deve disponibilizar, como o armazenamento de informações detalhadas sobre utilizadores, vendas ou produtos; o suporte a **consultas complexas** que permitam a extracção de dados de forma eficiente; e a integração com outras ferramentas e sistemas. Por outro lado, os **requisitos não funcionais** englobam aspectos como **desempenho**, assegurando tempos de resposta adequados; **escalabilidade**, que permite o crescimento do sistema à medida que aumenta o volume de dados ou de utilizadores; **segurança**, com controlos rigorosos de acessos e protecção contra ameaças externas; **disponibilidade**, garantindo o acesso contínuo ao sistema mesmo em situações de falha; e a **integridade dos dados**, fundamental para assegurar que as informações armazenadas sejam precisas e consistentes.
+
+A **consistência de dados** é um elemento essencial para assegurar que os requisitos da base de dados sejam satisfeitos de forma fiável. Garante que as informações armazenadas são sempre **correctas**, **fiáveis** e representam fielmente a realidade que descrevem. Este conceito é implementado através de várias práticas cruciais. A **integridade referencial** é uma delas, garantindo que as relações entre tabelas sejam coerentes e que não ocorram situações como referências a dados inexistentes. Por exemplo, uma venda registada num sistema deve estar sempre associada a um cliente válido, assegurando a sincronização entre tabelas. As **regras de negócio**, por outro lado, adicionam camadas de lógica à consistência, estabelecendo condições específicas para que os dados sejam considerados válidos. Estas regras podem incluir restrições como impedir valores negativos num campo de stock ou exigir que determinados campos sejam preenchidos antes de um registo ser guardado.
+
+////
+Outro aspecto crítico da consistência é o uso das propriedades **ACID** (**Atomicidade**, **Consistência**, **Isolamento** e **Durabilidade**) em sistemas de gestão de bases de dados transaccionais. A **atomicidade** garante que, numa transacção, todas as operações sejam concluídas com sucesso ou nenhuma delas seja efectuada, evitando estados intermédios que possam causar inconsistências. A **consistência** assegura que a base de dados permanece num estado válido antes e depois de uma transacção. O **isolamento** evita que transacções simultâneas interfiram entre si, preservando a integridade dos dados em cenários de acesso concorrente. Por fim, a **durabilidade** assegura que os dados confirmados numa transacção são mantidos, mesmo em caso de falha do sistema, como cortes de energia ou problemas de hardware.
+
+Além disso, práticas como a **normalização** são essenciais para evitar **anomalias** e **redundâncias**. A normalização divide os dados em tabelas menores, cada uma com um propósito específico, reduzindo a duplicação de informações e melhorando a integridade. Por exemplo, em vez de registar informações de um cliente em várias tabelas, estas são armazenadas numa única tabela central e referenciadas por outras tabelas através de **chaves estrangeiras**. Isto previne problemas como actualizações inconsistentes ou dados contraditórios.
+
+////
+
+A consistência de dados também é fundamental para responder às necessidades de sistemas modernos que exigem operações em tempo real e sincronização entre diferentes bases de dados ou sistemas distribuídos. Nestes cenários, o uso de estratégias de replicação e controlo de concorrência ajuda a manter os dados actualizados em todas as partes do sistema. Mesmo em sistemas NoSQL, onde a consistência pode ser relaxada temporariamente para priorizar desempenho e disponibilidade, existem mecanismos que permitem a reconciliação de dados para garantir que os requisitos sejam cumpridos a longo prazo.
+
+Em suma, os **requisitos de bases de dados** definem as funcionalidades e características operacionais esperadas de um sistema de dados, enquanto a **consistência de dados** assegura que esses requisitos são cumpridos de forma fiável. A combinação de boas práticas, como a integridade referencial, propriedades ACID, normalização e gestão eficiente de transacções, é fundamental para criar sistemas robustos, escaláveis e capazes de oferecer informações fiáveis e úteis para suportar a tomada de decisões e operações empresariais.
+
+<<<
+
+=== Exercício 1
+
+Para uma BD fictícia de uma faculdade considere o seguinte requisito para a representação de dados para docentes:
+
+* Um docente tem associado um número mecanográfico único, nome completo, endereço de email, e um número de telefone opcional.
+
+Considere agora o seguinte conjunto de dados para alguns docentes representados de forma tabelada, em que entradas denotadas com NULL correspondem a *valores não definidos*. 
+
+O que há de errado com os dados das últimas 4 entradas (em *Bold*)?
+
+
+.Tabela ALUNO
+|====
+| Nº Mec. | Nome | Email | Telefone 
+| 10345553 | António das Cenas | cenas@bd.com | NULL 
+| 12388455 | Alípio Jorge | amjorge@xpto.edu.pt | 993332122 
+| 12345678 | Eduardo Marques | edrdo@sql.edu.pt | NULL 
+| 18923444 | Eduardo Marques | eduardo@proton.com | 983111122 
+| *28373733* | *Fátima Lopes* | *NULL* | *983000111* 
+| *28844283* | *Roberta Rodrigues* | *rr@bd.com* | *ABCDE* 
+| *10345457* | *Filipe Lopes* | *f123@xyz.com* | *NULL* 
+| *10345457* | *António Silva* | *antonio@silva.com* | *912345678* 
+|====
+
+<<<
+
+=== Exercício 2
+
+Considere os seguintes requisitos adicionais para a BD de uma faculdade no que toca à representação de departamentos, cursos e cadeiras:
+
+* Departamentos, cursos e cadeiras têm associados um código (único) e nome.
+* Cada docente faz parte de um só departamento e em cada departamento existe um docente que é presidente do departamento.
+* Cada curso tem associado um ou mais departamentos responsáveis e uma ou mais cadeiras. Cada departamento está associado a pelo menos um curso.
+* Cada cadeira tem um departamento responsável, um ou mais docentes desse departamento que dão aulas, e está associada a um ou mais cursos, possivelmente de departamentos diferentes do departamento ou departamentos responsáveis pelo curso.
+
+Indique se os seguintes factos estariam ou não de acordo com os requisitos apresentados, justificando a sua resposta para cada caso negativo.
+
+. Departamentos e docentes:
+
+* O Dep. de Ciências das Coisas não tem docentes.
+* O Prof. António das Cenas é docente no Dep. de Ciências das Coisas e também presidente do mesmo departamento.
+* O Prof. Eduardo Marques é docente do Dep. de Ciência de Computadores.
+* O Prof. António das Cenas é docente do Dep. de Ciências das Coisas e do Dep. de Física.
+* O Dep. de Ciência de Computadores tem como presidentes o Prof. Alípio Jorge e o Prof. Eduardo Marques, ambos docentes nesse departamento.
+* O Dep. Física não tem um presidente.
+* O Dep. Ciência de computadores tem como presidente o Prof. António das Cenas que é docente no Dep. Ciências das Coisas.
+
+. Departamentos e cursos:
+
+* O Dep. de Ciência das Coisas não é responsável por qualquer curso.
+* Os cursos de Licenciatura em Ciência de Computadores e Mestrado em Segurança Informática são da responsabilidade do Dep. Ciências dos Computadores.
+* O curso de Licenciatura em Coisas é da responsabilidade conjunta do Dep. Física e do Dep. Ciência das Coisas.
+
+. Cadeiras:
+
+* A cadeira Coisa Nenhuma não tem docentes.
+* A cadeira Coisa Nenhuma não é dada em nenhum curso.
+* A cadeira de Arquitectura de Computadores, responsabilidade do Dep. Ciência Computadores, é dada a vários cursos da responsabilidade do Dep. Ciência de Computadores.
+* A cadeira de Probabilidades e Estatística, responsabilidade do Dep. Matemática Aplicada, é dada a vários cursos incluindo a Lic. em Ciência de Computadores do Dep. Ciência de Computadores.
+* Eduardo Marques, do Dep. Ciência de Computadores, dá aulas à cadeira Cálculo I do Dep. de Matemática.
+* A cadeira de Bases de Dados é da responsabilidade do Dep. Ciência de Computadores, e tem como docentes Eduardo Marques, Pedro Brandão e Joaquim Silva que são docentes no mesmo departamento.
+
+<<<
+
+=== Exercício 3
+
+Considere  a imagem apresentada com dados (consistentes) para docentes e departamentos. A seguir é apresentada a mesma informação  na forma tabelada em que:
+
+* para cada docente o respectivo departamento é indicado pelo código na coluna Departamento;
+* e para cada departamento o nº mecanográfico do presidente respectivo é indicado pela colunaPresidente.
+
+image::diagrama.png[Tabela Faculdade]
+
+.Tabela DOCENTE
+|===
+| Nº Mec. | Nome | Email | Telefone | Departamento
+| 10345553 | António das Cenas | cenas@bd.com | NULL | CO
+| 12388455 | Alípio Jorge | amjorge@xpto.edu.pt | 993332122 | CC
+| 12345678 | Eduardo Marques | edrdo@sql.edu.pt | NULL | CC
+| 18923444 | Eduardo Marques | eduardo@proton.com | 983111122 | F
+| 28373733 | Fátima Lopes | fatima@proton.com | NULL | F
+|===
+
+<<<
+
+.Tabela DEPARTAMENTO
+|===
+| Código | Nome | Presidente
+| CO | Ciência das Coisas | 10345553
+| CC | Ciência de Computadores | 12388455
+| F | Física | 18923444
+|===
+
+==== 3.1
+
+Indique o conjunto de nomes de docentes associados a cada departamento e o nome do presidente de cada departamento.
+
+==== 3.2
+
+Qual é o problema de efectuarmos as seguintes alterações aos dados apresentados em termos da sua consistência se:
+
+. Actualizarmos o valor de Presidente no Dep. Física para 87654321?
+. Actualizarmos o valor de Presidente no Dep. Física para 12345678?
+. Removermos a entrada para o docente Alípio Jorge?
+. Removermos a entrada para o departamento de Ciência de Computadores.
+. Adicionarmos a seguinte entrada para um novo docente António Silva:
++
+|===
+| Nº Mec.  | Nome| Email| Telefone| Departamento
+| 77245553 | António Silva | antonio@chemistry.com| 93838033 | Q
+|===
+
+. Adicionarmos a seguinte entrada para um novo docente Antónia Silva:Nº
++
+|===
+| Nº Mec.  | Nome| Email| Telefone| Departamento
+| 77245553 | António Silva | antonia@physics.com| NULL | F
+|===
+
+ 
+<<<
+
+=== Exercício 4
+
+Veja a imagem a seguir representa  dados adicionais para cursos e cadeiras. 
+ 
+image::diagrama.png[Tabela Faculdade]
+
+A seguir é apresentada a mesma informação  na forma tabelada.
+
+
+
+*CURSO*
+
+|===
+| Código | Nome
+| LCC | Lic. em Ciência de Computadores
+| MIERSI | Mestr. Int. em Redes e Sistemas Informáticos
+| LF | Lic. em Física
+| LC | Lic. em Coisas
+|===
+
+*DEPARTAMENTOS RESPONSÁVEIS POR CURSO*
+
+|===
+| Curso | Departamento
+| LCC | CC
+| MIERSI | CC
+| LF | F
+| LC | CO
+| LC | F
+|===
+
+Nota: curso e departamento(s) responsável(eis) identificados pelos respectivos código
+
+
+
+*CADEIRA*
+
+|===
+| Código | Nome | Departamento
+| BD | Bases de Dados | CC
+| F1 | Física I | F
+| SC | Sociologia das Coisas | CO
+|===
+
+Nota: departamento responsável identificado pelo respectivo código na coluna Departamento
+
+
+*DOCENTES POR CADEIRA*
+
+|===
+| Cadeira | Docente
+| BD | 12388455
+| BD | 12345678
+| F1 | 28373733
+| SC | 10345553
+|===
+
+Nota: cadeira identificada pelo código, docente pelo número mecanográfico
+
+*CURSOS POR CADEIRA*
+
+|===
+| Cadeira | Curso
+| BD | LCC
+| BD | MIERSI
+| BD | LF
+| F1 | LF
+| F1 | LC
+| SC | LC
+|===
+
+Nota: cadeira e curso identificados pelos respectivos códigos
+
+<<<
+
+==== 4.1
+
+. Que cursos são da responsabilidade de cada departamento? Que departamentos são responsáveis por mais do que um curso? Há cursos com mais do que um departamento responsável?
+. Quais são os nomes dos docentes de cada uma das cadeiras?
+. Qual é o nome de cada uma das cadeiras oferecidas à Lic. em Coisas?
+
+==== 4.2
+
+Indique se a BD fica consistente em cada um dos seguintes casos se alterarmos os dados acima:
+
+. Adicionarmos em *OCENTES POR CADEIRA*:
++
+|===
+| Cadeira | Docente
+| F1 | 12345678
+|===
+
+. Adicionarmos em *DOCENTES POR CADEIRA*:
++
+|===
+| Cadeira | Docente
+| F1 | 28373733
+|===
+
+. Adicionarmos em *CURSOS POR CADEIRA* a entrada para a cadeira com código SC para:
++
+|===
+| Cadeira | Curso 
+| SC | LF 
+|===
+
+. Actualizarmos em *CADEIRA* a entrada com código BD para:
++
+|===
+| Código | Nome | Departamento
+| BD | Bases de Dados | F
+|===
+
+. Actualizarmos em *CURSOS POR CADEIRA* a entrada para a cadeira com código SC para:
++
+|===
+| Cadeira | Curso 
+| SC | LF 
+|===
+
+. Removermos em *DOCENTES POR CADEIRA*:
++
+|===
+| Cadeira | Docente
+| BD | 12388455
+|===
+
+. Removermos em *DOCENTES POR CADEIRA*:
++
+|===
+| Cadeira | Docente
+| F1 | 28373733
+|===
+
+. Removermos em *CURSOS POR CADEIRA* a entrada para a cadeira com código SC.
+
+<<<
+
+
+=== Exercício 5
+
+Neste  exercício  serão apresentados exemplos de operações válidas e inválidas com base em regras como integridade referencial, restrições de negócio e validação de dados. O objetivo é compreender como essas regras evitam inconsistências e erros, assegurando que os dados armazenados são fiáveis e coerentes.
+
+==== Clientes
+
+[cols="1,1", options="header"]
+|===
+|ClienteID (PK) |Nome
+|1              |João Silva
+|2              |Maria Costa
+|===
+
+* Nota: O Cada cliente deve ter um valor para ClienteID único e inteiro.
+
+==== Vendas
+
+[cols="1,1,1", options="header"]
+|===
+|VendaID (PK)   |ClienteID (FK) |Valor
+|1              |1              |150.00
+|===
+
+==== Produtos
+
+[cols="1,1,1", options="header"]
+|===
+|ProdutoID (PK) |Nome           |Stock
+|1              |Computador     |10
+|2              |Teclado        |25
+|===
+
+* Nota: O stock de um produto não pode ser negativo.
+
+==== Funcionários
+
+[cols="1,1,1", options="header"]
+|===
+|FuncionarioID (PK) |Nome        |Telefone
+|1                  |Ana Costa   |912345678
+|===
+
+* Nota: Um número de telefone começa com o digito 9.
+
+
+==== Conjuntos de Operações
+
+1. Adicione uma venda com o `ClienteID = 3`.
+2. Atualize o stock do produto com `ProdutoID = 1` para `-5`.
+3. Elimine o cliente com `ClienteID = 2`.
+4. Insira um funcionário com o número de telefone `123456789`.
+5. Adicione uma venda com o `ClienteID = 1` e `Valor = 200.00`.
+6. Insira um novo produto com o nome “Monitor” e stock inicial de `50`.
+7. Elimine o cliente com `ClienteID = 1`.
+8. Atualize o telefone do funcionário `FuncionarioID = 1` para `987654321`.
+9. Insira um novo funcionário com o nome “Pedro Almeida” e telefone `934567890`.
+10. Tente inserir uma venda sem especificar o `ClienteID`.
+
+<<<
+
+
+
+=== Exercício 6
+
+Uma cadeia de hotéis deseja organizar e gerir informações relacionadas a:
+
+- **Hóspedes:** Dados pessoais de clientes que fazem reservas.
+- **Quartos:** Detalhes sobre os quartos disponíveis nos hotéis.
+- **Reservas:** Informações sobre reservas feitas por hóspedes.
+- **Hotéis:** Dados sobre os hotéis onde os quartos estão localizados.
+
+A base de dados deve:
+
+1. Garantir unicidade na identificação de hóspedes, quartos, reservas e hotéis.
+2. Assegurar coerência entre quartos, reservas e hóspedes.
+3. Facilitar atualizações e consultas eficientes.
+
+==== Requisitos
+
+1. Cada hóspede deve ter um **ID único**.
+2. Cada quarto deve ser identificado por um **ID único** e estar associado a um hotel válido.
+3. Cada reserva deve referenciar um hóspede e um quarto válidos.
+4. Quartos duplicados, hóspedes duplicados e reservas com referências inválidas não devem ser permitidos.
+5. A integridade referencial deve ser mantida entre reservas, quartos, hóspedes e hotéis.
+
+==== Tabelas e Dados
+
+===== Hóspedes
+
+[cols="1,1,1", options="header"]
+|===
+|HospedeID (PK) |Nome           |Telefone
+|1              |João Silva     |912345678
+|2              |Maria Costa    |913456789
+|2              |Maria Costa    |913456789 << Duplicado
+|===
+
+===== Hotéis
+
+[cols="1,1,1", options="header"]
+|===
+|HotelID (PK)   |Nome           |Localização
+|1              |Hotel Sol      |Lisboa
+|2              |Hotel Mar      |Porto
+|3              |Hotel Sol      |Lisboa << Duplicado
+|===
+
+===== Quartos
+
+[cols="1,1,1,1", options="header"]
+|===
+|QuartoID (PK)  |HotelID (FK)   |Tipo           |Preço
+|101            |1              |Individual     |50.00
+|102            |2              |Duplo          |75.00
+|103            |5              |Individual     |60.00 << HotelID inválido
+|101            |1              |Individual     |50.00 << Duplicado
+|===
+
+===== Reservas
+
+[cols="1,1,1,1", options="header"]
+|===
+|ReservaID (PK) |HospedeID (FK) |QuartoID (FK)  |Data
+|1              |1              |101            |2025-01-10
+|2              |2              |103            |2025-01-15 << QuartoID inválido
+|3              |4              |102            |2025-01-20 << HospedeID inválido
+|===
+
+==== Questões
+
+1. Analise os dados apresentados nas tabelas e identifique possíveis problemas nas mesmas.
+2. Reflita sobre como esses problemas podem afetar a integridade e a consistência da base de dados.
+3. Proponha alterações que permitam corrigir os problemas identificados e melhorar a fiabilidade dos dados.
+
+

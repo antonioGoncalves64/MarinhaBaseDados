@@ -1,0 +1,180 @@
+
+# Laboratório: Introdução Base Dados (Solução)
+
+## Tabelas
+
+### **Tabela: ESTUDANTE (STUDENT)**
+| Nome   | Número_Estudante | Classe | Curso (Major) |
+|--------|-------------------|--------|---------------|
+| Smith  | 17                | 1      | CS            |
+| Brown  | 8                 | 2      | CS            |
+
+---
+
+### **Tabela: DISCIPLINA (COURSE)**
+| Nome_Disciplina                   | Código_Disciplina | Créditos | Departamento |
+|-----------------------------------|-------------------|----------|--------------|
+| Introdução à Informática          | CS1310           | 4        | CS           |
+| Estruturas de Dados               | CS3320           | 4        | CS           |
+| Matemática Discreta               | MATH2410         | 3        | MATH         |
+| Base de Dados                     | CS3380           | 3        | CS           |
+
+---
+
+### **Tabela: TURMA (SECTION)**
+| Código_Turma | Código_Disciplina | Semestre  | Ano | Docente   |
+|--------------|--------------------|-----------|-----|-----------|
+| 85           | MATH2410          | Outono    | 07  | King      |
+| 92           | CS1310            | Outono    | 07  | Anderson  |
+| 102          | CS3320            | Primavera | 08  | Knuth     |
+| 112          | MATH2410          | Outono    | 08  | Chang     |
+| 119          | CS1310            | Outono    | 08  | Anderson  |
+| 135          | CS3380            | Outono    | 08  | Stone     |
+
+---
+
+### **Tabela: HISTÓRICO DE NOTAS (GRADE_REPORT)**
+| Número_Estudante | Código_Turma | Nota |
+|------------------|--------------|------|
+| 17               | 112          | B    |
+| 17               | 119          | C    |
+| 8                | 85           | A    |
+| 8                | 92           | A    |
+| 8                | 102          | B    |
+| 8                | 135          | A    |
+
+---
+
+### **Tabela: PRÉ-REQUISITOS (PREREQUISITE)**
+| Código_Disciplina | Código_Pré-Requisito |
+|-------------------|-----------------------|
+| CS3380            | CS3320               |
+| CS3380            | MATH2410             |
+| CS3320            | CS1310               |
+
+---
+
+## Questões
+
+
+### **1.1. Defina os seguintes termos**
+Explique os conceitos fundamentais relacionados a bases de dados:
+- **Dados:** Informações brutas que podem ser processadas para gerar conhecimento.
+- **Base de Dados:** Um conjunto organizado de dados armazenados de forma a permitir o acesso, gestão e atualização eficiente.
+- **SGBD (Sistema de Gestão de Base de Dados):** Software responsável por criar, gerir e interagir com bases de dados.
+- **Sistema de Base de Dados:** O conjunto formado pela base de dados, o SGBD e as aplicações associadas.
+- **Catálogo da Base de Dados:** Um repositório que armazena os metadados da base de dados, como informações sobre tabelas, restrições e relacionamentos.
+- **Independência Programa-Dados:** A capacidade de alterar a estrutura dos dados sem que os programas que os utilizam precisem ser modificados.
+- **Vista de Utilizador:** Uma abstração ou subconjunto de dados adaptados às necessidades específicas de um grupo de utilizadores.
+- **Administrador de Base de Dados (DBA):** A pessoa ou equipa responsável por gerir o sistema de base de dados, garantindo segurança, eficiência e disponibilidade.
+- **Utilizador Final:** Pessoa que interage com a base de dados, utilizando aplicações ou interfaces para realizar consultas ou atualizações.
+- **Transação Pré-Definida:** Operações standard ou transações frequentes executadas por utilizadores finais de forma repetitiva.
+- **Sistema Dedutivo de Base de Dados:** Base de dados que utiliza lógica e inferência para gerar conhecimento a partir de dados existentes.
+- **Objeto Persistente:** Dados que permanecem armazenados e acessíveis mesmo após o fim de uma execução de programa.
+- **Metadados:** Dados que descrevem outros dados, como estrutura, tipos, restrições e relações entre tabelas.
+- **Aplicação de Processamento de Transações:** Aplicações que gerem operações críticas, como compras, reservas ou registos, realizadas em tempo real.
+
+---
+
+### **1.2. Quais são os quatro principais tipos de ações que envolvem bases de dados?**
+Descreva as ações fundamentais realizadas em bases de dados:
+1. **Definição de Dados:** Inclui a criação da estrutura da base de dados, como tabelas, chaves primárias, chaves estrangeiras e restrições.
+2. **Construção da Base de Dados:** Refere-se à inserção de dados iniciais e à criação de índices para melhorar a performance.
+3. **Manipulação de Dados:** Envolve consultas, atualizações, remoções ou inserções de novos dados através de linguagens como SQL.
+4. **Manutenção da Base de Dados:** Inclui ações como backups regulares, recuperação de dados após falhas e monitorização do desempenho.
+
+---
+
+### **1.3. Quais são as principais características da abordagem de bases de dados?**
+Discuta como a abordagem de bases de dados se distingue dos sistemas tradicionais de ficheiros:
+- Eliminação de redundância através da normalização.
+- Garantia de consistência e integridade dos dados.
+- Controlo centralizado de acesso e permissões.
+- Independência entre programas e estrutura dos dados.
+- Melhor gestão de segurança e recuperação em caso de falhas.
+
+---
+
+### **1.4. Quais são as responsabilidades do DBA e dos designers de bases de dados?**
+- **DBA (Administrador de Base de Dados):**
+  - Gerir acessos e permissões de utilizadores.
+  - Realizar backups e implementar estratégias de recuperação de desastres.
+  - Monitorizar e otimizar o desempenho da base de dados.
+- **Designers de Bases de Dados:**
+  - Definir a estrutura lógica (relacionamentos, restrições, chaves primárias e estrangeiras).
+  - Criar modelos físicos, considerando o desempenho e armazenamento.
+  - Especificar restrições de integridade e segurança.
+
+---
+
+### **1.5. Quais são os diferentes tipos de utilizadores finais de bases de dados?**
+Identifique e discuta os tipos de utilizadores:
+1. **Utilizadores Casuais:** Realizam consultas complexas e ocasionais.
+2. **Utilizadores Regulares:** Executam transações de rotina, como inserções e consultas pré-definidas.
+3. **Utilizadores Especialistas:** Desenvolvem aplicações, otimizam consultas ou realizam operações complexas.
+4. **Utilizadores Finais Gerais:** Utilizam interfaces simples para interagir com a base de dados.
+
+---
+
+### **1.6. Quais capacidades devem ser fornecidas por um SGBD?**
+Discuta as funcionalidades essenciais:
+- Definição de dados através de DDL (Data Definition Language).
+- Manipulação de dados usando DML (Data Manipulation Language).
+- Gestão de transações, incluindo rollback, commit e isolamento.
+- Garantia de integridade e consistência dos dados.
+- Segurança e controlo de acessos.
+- Recuperação de dados em caso de falhas.
+
+---
+
+### **1.7. Quais são as diferenças entre sistemas de bases de dados e sistemas de recuperação de informação?**
+- **Sistemas de Bases de Dados:** Estrutura rigorosa e consultas formais, geralmente usando SQL.
+- **Sistemas de Recuperação de Informação:** Trabalham com grandes volumes de texto sem estrutura rígida, como motores de busca.
+
+---
+
+### **1.8. Quais consultas e operações de atualização podem ser aplicadas à base de dados?**
+Forneça exemplos de possíveis consultas e operações:
+- **Consultas:** "Quais alunos estão inscritos em Matemática Discreta no semestre de 2008?"
+- **Atualizações:** "Adicione uma nova turma de Estruturas de Dados para o semestre da Primavera de 2009."
+
+---
+
+### **1.9. Qual é a diferença entre redundância controlada e não controlada?**
+- **Redundância Controlada:** Planejada e útil, como cópias de segurança.
+- **Redundância Não Controlada:** Não intencional, causando inconsistências e aumento de armazenamento.
+
+---
+
+### **1.10. Quais relações existem entre os registos da base de dados?**
+Liste e explique os relacionamentos entre as tabelas:
+- **Aluno ↔ Notas:** Relacionamento baseado no identificador do estudante.
+- **Disciplina ↔ Pré-requisitos:** Hierarquia entre disciplinas.
+
+---
+
+### **1.11. Que vistas adicionais podem ser necessárias?**
+Exemplos de vistas:
+- **Vista Académica:** Frequência e notas de alunos por disciplina.
+- **Vista Administrativa:** Relatórios de desempenho por departamento.
+
+---
+
+### **1.12. Que restrições de integridade podem ser aplicadas?**
+Exemplos incluem:
+- Restrições de chave primária e estrangeira.
+- Regras para garantir que os créditos não ultrapassem um limite máximo.
+
+---
+
+### **1.13. Quando usar processamento tradicional de ficheiros em vez de bases de dados?**
+Exemplos:
+- Sistemas simples de registos temporários, como logs.
+- Aplicações onde o desempenho supera a flexibilidade, como controladores de dispositivos.
+
+---
+
+### **1.14. Alterações no departamento de "CS"**
+a. Identifique as colunas em todas as tabelas que devem ser atualizadas quando o nome do departamento de "CS" mudar para "CSSE".
+
+b. Proponha uma reestruturação das tabelas para minimizar alterações, de forma que apenas uma coluna precise ser atualizada.
